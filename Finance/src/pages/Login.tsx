@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import "./Login.css"; 
+import "./Login.css";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -26,12 +26,25 @@ const Login = () => {
 
     try {
       const response = await axios.post("http://localhost:5000/api/login", formData);
+
       if (response.data.success) {
-        localStorage.setItem("username", response.data.username); // Store username in local storage
+        // Store token for authentication
+        localStorage.setItem("token", response.data.token);
+        // Store user's name from the user object in the response
+        localStorage.setItem("username", response.data.user.name);
+        // Optionally store other user data if needed
+        localStorage.setItem("userEmail", response.data.user.email);
         navigate("/dashboard");
+      } else {
+        setError("Invalid credentials. Please try again.");
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Login failed. Please try again.");
+      if (axios.isAxiosError(err) && err.response) {
+        // Handle specific error messages from the server
+        setError(err.response.data.message || "Login failed. Please try again.");
+      } else {
+        setError(err instanceof Error ? err.message : "Login failed. Please try again.");
+      }
     }
   };
 

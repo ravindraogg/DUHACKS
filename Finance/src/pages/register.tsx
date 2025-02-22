@@ -13,7 +13,7 @@ const Register = () => {
   });
   const [error, setError] = useState("");
   const navigate = useNavigate();
-
+  
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -30,14 +30,14 @@ const Register = () => {
     try {
       const response = await axios.post("http://localhost:5000/api/register", formData);
       if (response.data.success) {
-        localStorage.setItem("username", formData.name); // Store username in local storage
+        localStorage.setItem("username", response.data.username); 
         navigate("/dashboard");
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Registration failed. Please try again.");
     }
   };
-
+  
   return (
     <div className="register-container">
       <h2>Register for Cost-Sage</h2>

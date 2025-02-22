@@ -234,3 +234,76 @@ body, html {
 .feature-card:nth-child(4) { animation-delay: 0.3s; }
 .feature-card:nth-child(5) { animation-delay: 0.4s; }
 .feature-card:nth-child(6) { animation-delay: 0.5s; }
+
+/* Additional styles for the welcome message */
+.navbar-center {
+  flex: 1;
+  text-align: center;
+}
+
+.welcome-message {
+  font-size: 18px;
+  font-weight: 500;
+  color: #333;
+  margin: 0 20px;
+}
+
+/* Recent Expenses Section */
+.recent-expenses {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  margin: 24px auto;
+  max-width: 1400px;
+  box-shadow: var(--card-shadow);
+}
+
+.recent-expenses h2 {
+  color: #0044cc;
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.expense-history {
+  overflow-x: auto;
+}
+
+.expense-history table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.expense-history th,
+.expense-history td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.expense-history th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+  color: #333;
+}
+
+.expense-history tr:hover {
+  background-color: #f8f9fa;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .welcome-message {
+    font-size: 16px;
+  }
+
+  .recent-expenses {
+    margin: 16px;
+    padding: 16px;
+  }
+
+  .expense-history {
+    font-size: 14px;
+  }
+}

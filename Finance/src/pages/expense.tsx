@@ -1,40 +1,65 @@
 import { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import "./expense.css";
 import axios from "axios";
+
+interface Expense {
+  id: number;
+  amount: number;
+  category: string;
+  description: string;
+  date: string;
+  userEmail?: string;
+  expenseType: string;
+}
 
 const ExpenseTracker = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
-
-  useEffect(() => {
-    const storedUsername = localStorage.getItem("username");
-    if (storedUsername) {
-      setUsername(storedUsername);
-    }
-  }, []);
-
-  const featureName = location.pathname
-    .split("/")[2]
-    .replace(/-/g, " ")
-    .replace(/\b\w/g, (char) => char.toUpperCase());
-
-  interface Expense {
-    id: number;
-    amount: number;
-    category: string;
-    description: string;
-    date: string;
-  }
-
+  const [userEmail, setUserEmail] = useState("");
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [amount, setAmount] = useState("");
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
   const [date, setDate] = useState("");
 
-  const addExpense = () => {
+  // Get the expense type from the URL
+  const expenseType = location.pathname
+    .split("/")[2]
+    .replace(/-/g, " ")
+    .replace(/\b\w/g, (char) => char.toUpperCase());
+
+  useEffect(() => {
+    const storedUsername = localStorage.getItem("username");
+    const storedEmail = localStorage.getItem("userEmail");
+
+    if (storedUsername) setUsername(storedUsername);
+    if (storedEmail) setUserEmail(storedEmail);
+
+    fetchExpenses();
+  }, [expenseType]);
+
+  const fetchExpenses = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get(
+        `http://localhost:5000/api/expenses/${encodeURIComponent(expenseType)}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (response.data.success) {
+        setExpenses(response.data.expenses);
+      }
+    } catch (err) {
+      console.error("Failed to fetch expenses:", (err as Error).message);
+    }
+  };
+
+  const addExpense = async () => {
     if (!amount || !category || !description || !date) {
       alert("Please fill all fields");
       return;
@@ -46,13 +71,38 @@ const ExpenseTracker = () => {
       category,
       description,
       date,
+      userEmail,
+      expenseType,
     };
 
-    setExpenses([...expenses, newExpense]);
-    setAmount("");
-    setCategory("");
-    setDescription("");
-    setDate("");
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.post(
+        "http://localhost:5000/api/expenses",
+        {
+          expenses: [newExpense],
+          username,
+          userEmail,
+          expenseType,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.data.success) {
+        setExpenses([...expenses, newExpense]);
+        setAmount("");
+        setCategory("");
+        setDescription("");
+        setDate("");
+        console.log("Expense added successfully");
+      }
+    } catch (err) {
+      console.error("Expense addition failed:", (err as Error).message);
+    }
   };
 
   const getTotalExpense = () => {
@@ -61,18 +111,35 @@ const ExpenseTracker = () => {
 
   const submitForAnalysis = async () => {
     try {
-      await axios.post("http://localhost:5000/api/expenses", { username, expenses });
+      const token = localStorage.getItem("token");
+      await axios.post(
+        "http://localhost:5000/api/expenses/analysis",
+        {
+          username,
+          userEmail,
+          expenseType,
+          expenses: expenses.map((expense) => ({
+            ...expense,
+            userEmail,
+            expenseType,
+          })),
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       navigate("/analysis");
     } catch (error) {
-      console.error("Error submitting data:", error);
+      console.error("Error submitting data:", (error as Error).message);
     }
   };
 
   return (
     <div className="expense-container">
-      {/* Navbar with Title & Go Back Button */}
       <nav className="navbar">
-        <h1 className="title">{featureName}</h1>
+        <h1 className="title">{expenseType}</h1>
         <span className="username">Welcome, {username}</span>
         <button className="back-button" onClick={() => window.history.back()}>
           ← Go Back
@@ -81,10 +148,10 @@ const ExpenseTracker = () => {
 
       <div className="expense-content">
         <div className="expense-form">
-          <h2>Add Expense</h2>
+          <h2>Add {expenseType} Expense</h2>
           <input
             type="number"
-            placeholder="Amount"
+            placeholder="Amount (₹)"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
           />
@@ -111,14 +178,14 @@ const ExpenseTracker = () => {
         </div>
 
         <div className="expense-list">
-          <h2>Expense List</h2>
+          <h2>{expenseType} Expense List</h2>
           <table>
             <thead>
               <tr>
                 <th>Date</th>
                 <th>Category</th>
                 <th>Description</th>
-                <th>Amount ($)</th>
+                <th>Amount (₹)</th>
               </tr>
             </thead>
             <tbody>
@@ -127,19 +194,21 @@ const ExpenseTracker = () => {
                   <td>{expense.date}</td>
                   <td>{expense.category}</td>
                   <td>{expense.description}</td>
-                  <td>${expense.amount.toFixed(2)}</td>
+                  <td>₹{expense.amount.toFixed(2)}</td>
                 </tr>
               ))}
             </tbody>
           </table>
           <div className="total-expense">
-            <h3>Total: ${getTotalExpense().toFixed(2)}</h3>
+            <h3>Total {expenseType} Expenses: ₹{getTotalExpense().toFixed(2)}</h3>
           </div>
         </div>
       </div>
-      <button className="analysis-button" onClick={submitForAnalysis}>
-        Submit for Analysis
-      </button>
+      <NavLink to="/analysis">
+        <button className="analysis-button" onClick={submitForAnalysis}>
+          Analyze Expenses
+        </button>
+      </NavLink>
     </div>
   );
 };
