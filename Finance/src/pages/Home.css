@@ -21,12 +21,18 @@ body {
     background-color: #007bff;
     color: white;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: var(--transition);
+    margin-right: 20px; /* Adjust as needed */
+    transform: translateX(-20px); 
   }
   
   .navbar-brand h1 {
     margin: 0;
     font-size: 24px;
     font-weight: 600;
+    transition: var(--transition);
+    margin-left: 30px; /* Adjust as needed */
+    transform: translateX(-20px); 
   }
   
   .navbar-links .login-button {
@@ -38,6 +44,9 @@ body {
     cursor: pointer;
     border-radius: 8px;
     transition: background-color 0.3s ease, color 0.3s ease;
+    transition: var(--transition);
+    margin-right: 12px; /* Adjust as needed */
+    transform: translateX(-20px); 
   }
   
   .navbar-links .login-button:hover {

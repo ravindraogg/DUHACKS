@@ -37,7 +37,7 @@ const Login = () => {
 
   return (
     <div className="login-container">
-      <h2>Login to Cost-Cutting AI</h2>
+      <h2>Login to Cost-Sage</h2>
       <form onSubmit={handleSubmit}>
         {error && <p className="error-message">{error}</p>}
         <div className="form-group">

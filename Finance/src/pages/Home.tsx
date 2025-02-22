@@ -12,7 +12,7 @@ const Home = () => {
       {/* Navbar */}
       <nav className="navbar">
         <div className="navbar-brand">
-          <h1>Du Hacks</h1>
+          <h1>Cost-Sage</h1>
         </div>
         <div className="navbar-links">
           <button className="login-button" onClick={() => navigate("/login")}>
@@ -23,7 +23,7 @@ const Home = () => {
 
       {/* Hero Section */}
       <div className="hero-section">
-        <h2>Welcome to Du Hacks</h2>
+        <h2>Welcome to Cost-Sage</h2>
         <p>Your ultimate platform for cost-cutting strategies and AI-driven financial planning.</p>
         <button className="get-started-button" onClick={() => navigate("/register")}>
           <FontAwesomeIcon icon={faRocket} /> Get Started
@@ -32,7 +32,7 @@ const Home = () => {
 
       {/* Features Section */}
       <div className="features-section">
-        <h3>Why Choose Du Hacks?</h3>
+        <h3>Why Choose Cost-Sage?</h3>
         <div className="features-grid">
           <div className="feature">
             <FontAwesomeIcon icon={faChartLine} className="feature-icon" />

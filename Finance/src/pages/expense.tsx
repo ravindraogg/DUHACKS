@@ -4,7 +4,11 @@ import "./expense.css";
 
 const ExpenseTracker = () => {
   const location = useLocation();
-  const featureName = location.pathname.split("/")[2].replace(/-/g, " ");
+  const featureName = location.pathname
+  .split("/")[2]
+  .replace(/-/g, " ")
+  .replace(/\b\w/g, (char) => char.toUpperCase());
+
 
   interface Expense {
     id: number;

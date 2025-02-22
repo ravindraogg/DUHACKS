@@ -41,7 +41,7 @@ const Register = () => {
 
   return (
     <div className="register-container">
-      <h2>Register for Cost-Cutting AI</h2>
+      <h2>Register for Cost-Sage</h2>
       <form onSubmit={handleSubmit}>
         {error && <p className="error-message">{error}</p>}
         <div className="form-group">

@@ -30,6 +30,9 @@ body, html {
   padding: 10px 15px;
   font-size: 16px;
   border-radius: 5px;
+  transition: var(--transition);
+  margin-right: 12px; /* Adjust as needed */
+  transform: translateX(-20px); 
   cursor: pointer;
 }
 
