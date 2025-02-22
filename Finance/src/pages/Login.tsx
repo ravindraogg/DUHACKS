@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import "./Login.css"; // Use the same CSS file for consistent styling
+import "./Login.css"; 
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -19,7 +19,6 @@ const Login = () => {
     e.preventDefault();
     setError("");
 
-    // Basic validation
     if (!formData.email || !formData.password) {
       setError("All fields are required.");
       return;
@@ -28,7 +27,8 @@ const Login = () => {
     try {
       const response = await axios.post("http://localhost:5000/api/login", formData);
       if (response.data.success) {
-        navigate("/dashboard"); // Redirect to dashboard or home page after successful login
+        localStorage.setItem("username", response.data.username); // Store username in local storage
+        navigate("/dashboard");
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Login failed. Please try again.");

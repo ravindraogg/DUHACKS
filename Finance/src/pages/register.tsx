@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./Register.css";
+
 const Register = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -13,17 +14,14 @@ const Register = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  // Define the type for the event parameter
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Define the type for the event parameter
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
 
-    // Basic validation
     if (!formData.name || !formData.email || !formData.password || !formData.companyName || !formData.industry) {
       setError("All fields are required.");
       return;
@@ -32,7 +30,8 @@ const Register = () => {
     try {
       const response = await axios.post("http://localhost:5000/api/register", formData);
       if (response.data.success) {
-        navigate("/login"); // Redirect to login page after successful registration
+        localStorage.setItem("username", formData.name); // Store username in local storage
+        navigate("/dashboard");
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Registration failed. Please try again.");

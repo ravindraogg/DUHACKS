@@ -17,10 +17,14 @@ body, html {
   left: 0; /* Stick to the left */
   right: 0; /* Stick to the right */
   z-index: 1000; /* Ensure navbar is above other content */
+  
 }
 
 .title {
   font-size: 24px;
+  transition: var(--transition);
+  margin-left: 30px; /* Adjust as needed */
+  transform: translateX(-20px); 
 }
 
 .back-button {
@@ -139,4 +143,29 @@ th {
   .expense-content {
     flex-direction: column;
   }
+}
+
+.analysis-button {
+  background-color: #0056b3;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 8px;
+  width: 200px; /* Adjust width */
+  height: 50px; /* Adjust height */
+  display: flex;
+  justify-content: center;
+ 
+  text-align: center;
+  margin: auto;
+  position: absolute;
+  top: 60%;
+  left: 24.5%;
+  transform: translate(-50%, -50%);
+}
+
+.analysis-button:hover {
+  background-color: #0056b3; /* Darker blue on hover */
 }

@@ -1,14 +1,24 @@
-import { useState } from "react";
-import { useLocation } from "react-router-dom"; // Import useLocation
+import { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import "./expense.css";
+import axios from "axios";
 
 const ExpenseTracker = () => {
   const location = useLocation();
-  const featureName = location.pathname
-  .split("/")[2]
-  .replace(/-/g, " ")
-  .replace(/\b\w/g, (char) => char.toUpperCase());
+  const navigate = useNavigate();
+  const [username, setUsername] = useState("");
 
+  useEffect(() => {
+    const storedUsername = localStorage.getItem("username");
+    if (storedUsername) {
+      setUsername(storedUsername);
+    }
+  }, []);
+
+  const featureName = location.pathname
+    .split("/")[2]
+    .replace(/-/g, " ")
+    .replace(/\b\w/g, (char) => char.toUpperCase());
 
   interface Expense {
     id: number;
@@ -49,18 +59,27 @@ const ExpenseTracker = () => {
     return expenses.reduce((total, expense) => total + expense.amount, 0);
   };
 
+  const submitForAnalysis = async () => {
+    try {
+      await axios.post("http://localhost:5000/api/expenses", { username, expenses });
+      navigate("/analysis");
+    } catch (error) {
+      console.error("Error submitting data:", error);
+    }
+  };
+
   return (
     <div className="expense-container">
       {/* Navbar with Title & Go Back Button */}
       <nav className="navbar">
         <h1 className="title">{featureName}</h1>
+        <span className="username">Welcome, {username}</span>
         <button className="back-button" onClick={() => window.history.back()}>
           ← Go Back
         </button>
       </nav>
 
       <div className="expense-content">
-        {/* Expense Input Form */}
         <div className="expense-form">
           <h2>Add Expense</h2>
           <input
@@ -91,7 +110,6 @@ const ExpenseTracker = () => {
           <button onClick={addExpense}>Add Expense</button>
         </div>
 
-        {/* Expense Table */}
         <div className="expense-list">
           <h2>Expense List</h2>
           <table>
@@ -119,6 +137,9 @@ const ExpenseTracker = () => {
           </div>
         </div>
       </div>
+      <button className="analysis-button" onClick={submitForAnalysis}>
+        Submit for Analysis
+      </button>
     </div>
   );
 };

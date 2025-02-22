@@ -34,7 +34,8 @@ body, html {
   font-size: 24px;
   font-weight: 600;
   color: #ffffff;
-  margin: 0;
+  margin-left: 25px; /* Adjust as needed */
+
 }
 
 .hamburger-button {
