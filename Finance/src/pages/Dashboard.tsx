@@ -1,11 +1,20 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import "./Dashboard.css";
 
 const AfterLoginPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const navigate = useNavigate(); // Initialize navigation
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
+  };
+
+  // Function to handle navigation to ExpenseTracker
+  const goToExpenseTracker = (featureName: string) => {
+    // Convert feature name into a URL-friendly format
+    const formattedFeature = featureName.toLowerCase().replace(/\s+/g, "-");
+    navigate(`/expense/${formattedFeature}`);
   };
 
   return (
@@ -15,7 +24,7 @@ const AfterLoginPage = () => {
         <div className="navbar-left">
           <h1 className="website-name">Du Hacks</h1>
         </div>
-        <div className="navbar-right ">
+        <div className="navbar-right">
           <button className="hamburger-button" onClick={toggleSidebar}>
             ☰
           </button>
@@ -25,12 +34,18 @@ const AfterLoginPage = () => {
       {/* Floating Sidebar */}
       <div className={`floating-sidebar ${isSidebarOpen ? "open" : ""}`}>
         <ul className="sidebar-menu">
-          <li>Full Expense Tracker</li>
-          <li>Business Expense Tracker</li>
-          <li>Personal Expense Tracker</li>
-          <li>Daily Expense Tracker</li>
-          <li>AI Recommendations</li>
-          <li>Other Expenses</li>
+          {[
+            "Full Expense Tracker",
+            "Business Expense Tracker",
+            "Personal Expense Tracker",
+            "Daily Expense Tracker",
+            "AI Recommendations",
+            "Other Expenses",
+          ].map((feature) => (
+            <li key={feature} onClick={() => goToExpenseTracker(feature)}>
+              {feature}
+            </li>
+          ))}
         </ul>
       </div>
 
@@ -40,36 +55,24 @@ const AfterLoginPage = () => {
           <img src="analysis-icon.png" alt="Analysis Icon" />
         </div>
         <div className="feature-cards">
-          <div className="feature-card">
-            <img src="expense-tracker.jpg" alt="Expense Tracker" className="card-image" />
-            <h2>Full Expense Tracker</h2>
-            <p>Track all your expenses in one place.</p>
-          </div>
-          <div className="feature-card">
-            <img src="business-expense.jpg" alt="Business Expense" className="card-image" />
-            <h2>Business Expense Tracker</h2>
-            <p>Manage and analyze business expenses.</p>
-          </div>
-          <div className="feature-card">
-            <img src="personal-expense.jpg" alt="Personal Expense" className="card-image" />
-            <h2>Personal Expense Tracker</h2>
-            <p>Keep track of your personal spending.</p>
-          </div>
-          <div className="feature-card">
-            <img src="daily-expense.jpg" alt="Daily Expense" className="card-image" />
-            <h2>Daily Expense Tracker</h2>
-            <p>Monitor your daily expenses.</p>
-          </div>
-          <div className="feature-card">
-            <img src="ai-recommendations.jpg" alt="AI Recommendations" className="card-image" />
-            <h2>AI Recommendations</h2>
-            <p>Get AI-driven cost-saving tips.</p>
-          </div>
-          <div className="feature-card">
-            <img src="other-expenses.jpg" alt="Other Expenses" className="card-image" />
-            <h2>Other Expenses</h2>
-            <p>Track miscellaneous expenses.</p>
-          </div>
+          {[
+            { name: "Full Expense Tracker", img: "expense-tracker.jpg" },
+            { name: "Business Expense Tracker", img: "business-expense.jpg" },
+            { name: "Personal Expense Tracker", img: "personal-expense.jpg" },
+            { name: "Daily Expense Tracker", img: "daily-expense.jpg" },
+            { name: "AI Recommendations", img: "ai-recommendations.jpg" },
+            { name: "Other Expenses", img: "other-expenses.jpg" },
+          ].map((feature) => (
+            <div
+              className="feature-card"
+              key={feature.name}
+              onClick={() => goToExpenseTracker(feature.name)}
+            >
+              <img src={feature.img} alt={feature.name} className="card-image" />
+              <h2>{feature.name}</h2>
+              <p>Track and analyze your {feature.name.toLowerCase()}.</p>
+            </div>
+          ))}
         </div>
       </div>
     </div>

@@ -4,8 +4,7 @@ import Register from "./pages/register"; // Import the Register component
 import Login from "./pages/Login";
 import Home from "./pages/Home";
 import AfterLoginPage from "./pages/Dashboard";
-import ExpenseTracker from "./pages/expense";
-
+import ExpenseTrackingPage from "./pages/expense";
 
 
 const App: React.FC = () => {
@@ -16,7 +15,7 @@ const App: React.FC = () => {
         <Route path="/login" element={<Login />} /> 
         <Route path="/" element={<Home />} />
         <Route path="/dashboard" element={<AfterLoginPage />} />
-        <Route path="/expense" element={<ExpenseTracker />} />
+        <Route path="/expense/:feature" element={<ExpenseTrackingPage />} />
       </Routes>
     </Router>
   );
