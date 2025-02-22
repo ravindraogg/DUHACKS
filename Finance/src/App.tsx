@@ -2,8 +2,11 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Register from "./pages/register"; // Import the Register component
 import Login from "./pages/Login";
-import Home from "./pages/home";
+import Home from "./pages/Home";
 import AfterLoginPage from "./pages/Dashboard";
+import ExpenseTracker from "./pages/expense";
+
+
 
 const App: React.FC = () => {
   return (
@@ -13,6 +16,7 @@ const App: React.FC = () => {
         <Route path="/login" element={<Login />} /> 
         <Route path="/" element={<Home />} />
         <Route path="/dashboard" element={<AfterLoginPage />} />
+        <Route path="/expense" element={<ExpenseTracker />} />
       </Routes>
     </Router>
   );

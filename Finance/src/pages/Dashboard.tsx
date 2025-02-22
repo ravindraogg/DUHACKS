@@ -1,116 +1,76 @@
-import { useState, useEffect } from "react";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
-import axios from "axios";
-
-interface Expense {
-  category: string;
-  amount: number;
-}
-
-interface Recommendation {
-  suggestion: string;
-  impact: string;
-}
+import { useState } from "react";
+import "./Dashboard.css";
 
 const AfterLoginPage = () => {
-  const [expenseData, setExpenseData] = useState<Expense[]>([]);
-  const [personalExpenses, setPersonalExpenses] = useState<Expense[]>([]);
-  const [dailyExpenses, setDailyExpenses] = useState<Expense[]>([]);
-  const [recommendations, setRecommendations] = useState<string[]>([]);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  useEffect(() => {
-    // Mock data for demonstration
-    setExpenseData([
-      { category: "Marketing", amount: 1200 },
-      { category: "Operations", amount: 800 },
-      { category: "IT Services", amount: 1500 },
-      { category: "HR", amount: 600 },
-    ]);
-    setPersonalExpenses([
-      { category: "Groceries", amount: 300 },
-      { category: "Rent", amount: 1000 },
-    ]);
-    setDailyExpenses([
-      { category: "Transport", amount: 50 },
-      { category: "Coffee", amount: 5 },
-    ]);
-
-    fetchRecommendations();
-  }, []);
-
-  const fetchRecommendations = async () => {
-    try {
-      const response = await axios.get("https://api.example.com/cost-cutting-ai");
-      setRecommendations(response.data);
-    } catch (error) {
-      console.error("Error fetching recommendations:", error);
-      setRecommendations([
-        "Switch to a budget supplier",
-        "Automate repetitive tasks",
-        "Negotiate bulk discounts",
-      ]);
-    }
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
   };
 
   return (
     <div className="after-login-container">
-      <h1 className="page-title">Welcome to Du Hacks</h1>
-
-      {/* Business Expenses Section */}
-      <div className="section">
-        <h2 className="section-title">Business Expenses</h2>
-        <div className="chart-container">
-          <ResponsiveContainer width="100%" height={200}>
-            <BarChart data={expenseData}>
-              <XAxis dataKey="category" />
-              <YAxis />
-              <Tooltip />
-              <Bar dataKey="amount" fill="#4F46E5" radius={[5, 5, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
+      {/* Navbar */}
+      <nav className="navbar">
+        <div className="navbar-left">
+          <h1 className="website-name">Du Hacks</h1>
         </div>
-      </div>
-
-      {/* Personal Expenses Section */}
-      <div className="section">
-        <h2 className="section-title">Personal Expenses</h2>
-        <div className="chart-container">
-          <ResponsiveContainer width="100%" height={200}>
-            <BarChart data={personalExpenses}>
-              <XAxis dataKey="category" />
-              <YAxis />
-              <Tooltip />
-              <Bar dataKey="amount" fill="#E53E3E" radius={[5, 5, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
+        <div className="navbar-right ">
+          <button className="hamburger-button" onClick={toggleSidebar}>
+            ☰
+          </button>
         </div>
-      </div>
+      </nav>
 
-      {/* Daily Expenses Section */}
-      <div className="section">
-        <h2 className="section-title">Daily Expenses</h2>
-        <div className="chart-container">
-          <ResponsiveContainer width="100%" height={200}>
-            <BarChart data={dailyExpenses}>
-              <XAxis dataKey="category" />
-              <YAxis />
-              <Tooltip />
-              <Bar dataKey="amount" fill="#38A169" radius={[5, 5, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-      </div>
-
-      {/* AI Recommendations Section */}
-      <div className="section">
-        <h2 className="section-title">AI Cost-Saving Recommendations</h2>
-        <ul className="recommendations-list">
-          {recommendations.map((rec, index) => (
-            <li key={index} className="recommendation-item">
-              {rec}
-            </li>
-          ))}
+      {/* Floating Sidebar */}
+      <div className={`floating-sidebar ${isSidebarOpen ? "open" : ""}`}>
+        <ul className="sidebar-menu">
+          <li>Full Expense Tracker</li>
+          <li>Business Expense Tracker</li>
+          <li>Personal Expense Tracker</li>
+          <li>Daily Expense Tracker</li>
+          <li>AI Recommendations</li>
+          <li>Other Expenses</li>
         </ul>
+      </div>
+
+      {/* Main Section */}
+      <div className="main-section">
+        <div className="analysis-icon">
+          <img src="analysis-icon.png" alt="Analysis Icon" />
+        </div>
+        <div className="feature-cards">
+          <div className="feature-card">
+            <img src="expense-tracker.jpg" alt="Expense Tracker" className="card-image" />
+            <h2>Full Expense Tracker</h2>
+            <p>Track all your expenses in one place.</p>
+          </div>
+          <div className="feature-card">
+            <img src="business-expense.jpg" alt="Business Expense" className="card-image" />
+            <h2>Business Expense Tracker</h2>
+            <p>Manage and analyze business expenses.</p>
+          </div>
+          <div className="feature-card">
+            <img src="personal-expense.jpg" alt="Personal Expense" className="card-image" />
+            <h2>Personal Expense Tracker</h2>
+            <p>Keep track of your personal spending.</p>
+          </div>
+          <div className="feature-card">
+            <img src="daily-expense.jpg" alt="Daily Expense" className="card-image" />
+            <h2>Daily Expense Tracker</h2>
+            <p>Monitor your daily expenses.</p>
+          </div>
+          <div className="feature-card">
+            <img src="ai-recommendations.jpg" alt="AI Recommendations" className="card-image" />
+            <h2>AI Recommendations</h2>
+            <p>Get AI-driven cost-saving tips.</p>
+          </div>
+          <div className="feature-card">
+            <img src="other-expenses.jpg" alt="Other Expenses" className="card-image" />
+            <h2>Other Expenses</h2>
+            <p>Track miscellaneous expenses.</p>
+          </div>
+        </div>
       </div>
     </div>
   );

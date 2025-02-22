@@ -1,68 +1,347 @@
 /* General Styles */
+body {
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  background-color: #f9f9f9;
+}
+
 .after-login-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: #007bff;
+  color: white;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+}
+
+.website-name {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+}
+
+.hamburger-button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 10px;
+}
+
+/* Floating Sidebar */
+.floating-sidebar {
+  position: fixed;
+  top: 80px; /* Below the navbar */
+  right: -300px; /* Start off-screen */
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  z-index: 1000;
+  width: 250px;
+  transition: right 0.3s ease;
+}
+
+.floating-sidebar.open {
+  right: 20px; /* Slide in */
+}
+
+.sidebar-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-menu li {
+  padding: 10px 0;
+  font-size: 16px;
+  color: #333;
+  cursor: pointer;
+}
+
+.sidebar-menu li:hover {
+  color: #007bff;
+}
+
+/* Main Section */
+.main-section {
+  flex: 1;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.analysis-icon img {
+  width: 100px;
+  height: 100px;
+  margin-bottom: 20px;
+}
+
+.feature-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.feature-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.card-image {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.feature-card h2 {
+  font-size: 24px;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.feature-card p {
+  font-size: 16px;
+  color: #555;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .feature-cards {
+    grid-template-columns: 1fr;
   }
-  
-  .page-title {
-    font-size: 32px;
-    font-weight: 600;
-    text-align: center;
-    margin-bottom: 40px;
-    color: #333;
+
+  .analysis-icon img {
+    width: 80px;
+    height: 80px;
   }
-  
-  /* Section Styles */
-  .section {
-    margin-bottom: 40px;
+
+  .floating-sidebar {
+    top: 70px;
+    right: -250px;
+    width: 200px;
   }
-  
-  .section-title {
-    font-size: 24px;
-    font-weight: 600;
-    margin-bottom: 20px;
-    color: #333;
+
+  .floating-sidebar.open {
+    right: 10px;
   }
-  
-  /* Chart Container */
-  .chart-container {
-    background-color: #f9f9f9;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+  .sidebar-menu li {
+    font-size: 14px;
   }
-  
-  /* Recommendations Section */
-  .recommendations-list {
-    list-style-type: disc;
-    padding-left: 20px;
+}/* General Styles */
+body {
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  background-color: #f9f9f9;
+}
+
+.after-login-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: #007bff;
+  color: white;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+}
+
+.website-name {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+}
+
+.hamburger-button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 18px;
+  margin-left: 1550px;
+}
+
+/* Floating Sidebar */
+.floating-sidebar {
+  position: fixed;
+  top: 80px; /* Below the navbar */
+  right: -300px; /* Start off-screen */
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  z-index: 1000;
+  width: 250px;
+  transition: right 0.3s ease;
+}
+
+.floating-sidebar.open {
+  right: 20px; /* Slide in */
+}
+
+.sidebar-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-menu li {
+  padding: 10px 0;
+  font-size: 16px;
+  color: #333;
+  cursor: pointer;
+}
+
+.sidebar-menu li:hover {
+  color: #007bff;
+}
+
+/* Main Section */
+.main-section {
+  flex: 1;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.analysis-icon img {
+  width: 100px;
+  height: 100px;
+  margin-bottom: 20px;
+}
+
+.feature-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.feature-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.card-image {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.feature-card h2 {
+  font-size: 24px;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.feature-card p {
+  font-size: 16px;
+  color: #555;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .feature-cards {
+    grid-template-columns: 1fr;
   }
-  
-  .recommendation-item {
-    font-size: 16px;
-    color: #555;
-    margin-bottom: 10px;
+
+  .analysis-icon img {
+    width: 80px;
+    height: 80px;
   }
-  
-  /* Responsive Design */
-  @media (max-width: 768px) {
-    .page-title {
-      font-size: 28px;
-    }
-  
-    .section-title {
-      font-size: 20px;
-    }
-  
-    .chart-container {
-      padding: 10px;
-    }
-  
-    .recommendation-item {
-      font-size: 14px;
-    }
+
+  .floating-sidebar {
+    top: 70px;
+    right: -250px;
+    width: 200px;
   }
+
+  .floating-sidebar.open {
+    right: 10px;
+  }
+
+  .sidebar-menu li {
+    font-size: 14px;
+  }
+}
+.hamburger-button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 10px;
+  width: 50px; /* Adjust width */
+  height: 50px; /* Adjust height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Ensure navbar-right does not restrict button width */
+.navbar-right {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-right: 15px;
+}
+
+/* Add a hover effect for better visibility */
+.hamburger-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 5px;
+}
