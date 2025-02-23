@@ -105,6 +105,38 @@ const Dashboard = () => {
     navigate(`/expense/${formattedFeature}`);
   };
 
+  const handleLogout = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("No auth token found");
+      }
+
+      const response = await axios.post(
+        "http://localhost:5000/api/logout",
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.data.success) {
+        // Clear local storage and redirect to login
+        localStorage.removeItem("token");
+        localStorage.removeItem("username");
+        localStorage.removeItem("userEmail");
+        navigate("/login");
+      } else {
+        throw new Error("Logout failed");
+      }
+    } catch (err) {
+      console.error("Logout error:", err);
+      alert("Failed to logout. Please try again.");
+    }
+  };
+
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-IN", {
       year: "numeric",
@@ -136,6 +168,12 @@ const Dashboard = () => {
               {feature.name}
             </li>
           ))}
+          {/* Add Logout Button */}
+          <li>
+            <button className="logout-button" onClick={handleLogout}>
+              Logout
+            </button>
+          </li>
         </ul>
       </div>
 

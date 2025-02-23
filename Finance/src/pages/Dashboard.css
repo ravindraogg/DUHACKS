@@ -43,7 +43,7 @@ body, html {
   border: none;
   font-size: 30px;
   cursor: pointer;
-  color: black;
+  color: white;
   padding: 8px;
   border-radius: 50%;
   transition: var(--transition);
@@ -306,4 +306,20 @@ body, html {
   .expense-history {
     font-size: 14px;
   }
+}
+
+.logout-button {
+  background-color: #ab3939;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  width: 50%;
+  text-align: center;
+}
+
+.logout-button:hover {
+  background-color: darkred;
 }
