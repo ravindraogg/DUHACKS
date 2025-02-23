@@ -21,7 +21,7 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
-    "types": ["d3-scale", "d3-time", "d3-timer", "estree", "json-schema"]
+    "types": ["d3-scale", "d3-time", "d3-timer", "estree", "json-schema", "node"]
   },
   "include": ["src"]
 }

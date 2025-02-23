@@ -5,7 +5,7 @@ const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const bodyParser = require("body-parser");
 const app = express();
-
+const { CohereClient } = require("cohere-ai");
 const JWT_SECRET = process.env.JWT_SECRET || 'your-jwt-secret-key';
 
 app.use((req, res, next) => {
@@ -38,19 +38,31 @@ const UserSchema = new mongoose.Schema({
 const ExpenseSchema = new mongoose.Schema({
   username: String,
   userEmail: String,
-  amount: Number,
-  category: String,
-  description: String,
-  date: String,
+  amount: {
+    type: Number,
+    required: true
+  },
+  category: {
+    type: String,
+    required: true
+  },
+  description: {
+    type: String,
+    required: true
+  },
+  date: {
+    type: String,
+    required: true
+  },
   expenseType: {
     type: String,
     required: true,
     enum: [
-      'Full Expense Tracker',
-      'Business Expense Tracker',
-      'Personal Expense Tracker',
-      'Daily Expense Tracker',
-      'Other Expenses'
+      'full expense tracker',
+      'business expense tracker',
+      'personal expense tracker',
+      'daily expense tracker',
+      'other expenses'
     ]
   },
   createdAt: {
@@ -62,7 +74,7 @@ const ExpenseSchema = new mongoose.Schema({
 const User = mongoose.model("User", UserSchema);
 const Expense = mongoose.model("Expense", ExpenseSchema);
 
-// JWT and middleware functions remain the same
+// JWT and middleware functions
 const generateToken = (user) => {
   return jwt.sign(
     { id: user._id, email: user.email, name: user.name },
@@ -212,7 +224,7 @@ app.post("/api/expenses", verifyToken, async (req, res) => {
           message: "Invalid expenses data or missing expense type" 
         });
       }
-  
+
       const userExpenses = expenses.map(expense => ({
         ...expense,
         username: req.user.name,
@@ -220,7 +232,7 @@ app.post("/api/expenses", verifyToken, async (req, res) => {
         expenseType,
         createdAt: new Date()
       }));
-  
+
       await Expense.insertMany(userExpenses);
       console.log(`${expenseType} expenses added for user: ${req.user.name}`);
       res.status(201).json({ success: true, message: "Expenses added successfully" });
@@ -229,16 +241,31 @@ app.post("/api/expenses", verifyToken, async (req, res) => {
       res.status(500).json({ success: false, message: "Server error" });
     }
   });
-  
-  // Fetch Expenses by Type
-  app.get("/api/expenses/:expenseType", verifyToken, async (req, res) => {
+
+// Fetch Expenses by Type
+app.get("/api/expenses/recent", verifyToken, async (req, res) => {
+    try {
+      const expenses = await Expense.find({ username: req.user.name })
+        .sort({ createdAt: -1 })
+        .limit(5);
+
+      console.log(`Recent expenses fetched for user: ${req.user.name}, Count: ${expenses.length}`);
+      res.json({ success: true, expenses });
+    } catch (err) {
+      console.error("Error fetching recent expenses:", err);
+      res.status(500).json({ success: false, message: "Server error" });
+    }
+  });
+
+// Then place the type-specific route
+app.get("/api/expenses/:expenseType", verifyToken, async (req, res) => {
     try {
       const expenseType = decodeURIComponent(req.params.expenseType);
       const expenses = await Expense.find({ 
         username: req.user.name,
         expenseType: expenseType
       }).sort({ date: -1 });
-  
+
       console.log(`${expenseType} expenses fetched for user: ${req.user.name}`);
       res.json({ success: true, expenses });
     } catch (err) {
@@ -246,27 +273,12 @@ app.post("/api/expenses", verifyToken, async (req, res) => {
       res.status(500).json({ success: false, message: "Server error" });
     }
   });
-  
-  // Fetch Recent Expenses (across all types)
-  app.get("/api/expenses/recent", verifyToken, async (req, res) => {
-    try {
-      const expenses = await Expense.find({ username: req.user.name })
-        .sort({ createdAt: -1 })
-        .limit(5);
-  
-      console.log(`Recent expenses fetched for user: ${req.user.name}`);
-      res.json({ success: true, expenses });
-    } catch (err) {
-      console.error("Error fetching recent expenses:", err);
-      res.status(500).json({ success: false, message: "Server error" });
-    }
-  });
-  
-  // Submit Expenses for Analysis
-  app.post("/api/expenses/analysis", verifyToken, async (req, res) => {
+
+// Submit Expenses for Analysis
+app.post("/api/expenses/analysis", verifyToken, async (req, res) => {
     try {
       const { expenseType, expenses } = req.body;
-      
+
       // Here you can add your analysis logic
       // For now, we'll just return the expenses grouped by category
       const analysisSummary = await Expense.aggregate([
@@ -284,7 +296,7 @@ app.post("/api/expenses", verifyToken, async (req, res) => {
           }
         }
       ]);
-  
+
       res.json({ 
         success: true, 
         analysis: analysisSummary,
@@ -295,12 +307,78 @@ app.post("/api/expenses", verifyToken, async (req, res) => {
       res.status(500).json({ success: false, message: "Server error" });
     }
   });
-  
-  // Error handling middleware
-  app.use((err, req, res, next) => {
+
+// GET Analysis for a Specific Expense Type
+app.get("/api/expenses/analysis/:expenseType", verifyToken, async (req, res) => {
+    try {
+      const expenseType = decodeURIComponent(req.params.expenseType);
+
+      // Aggregate expenses by category
+      const analysisSummary = await Expense.aggregate([
+        {
+          $match: {
+            username: req.user.name,
+            expenseType: expenseType,
+          },
+        },
+        {
+          $group: {
+            _id: "$category",
+            totalAmount: { $sum: "$amount" },
+            count: { $sum: 1 },
+          },
+        },
+      ]);
+
+      console.log(`Analysis fetched for ${expenseType} for user: ${req.user.name}`);
+      res.json({
+        success: true,
+        analysis: analysisSummary,
+        message: "Analysis fetched successfully",
+      });
+    } catch (err) {
+      console.error("Error fetching analysis:", err);
+      res.status(500).json({ success: false, message: "Server error" });
+    }
+  });
+
+const cohere = new CohereClient({
+    token: process.env.COHERE_API_KEY, // Use environment variable
+  });
+
+// Endpoint to generate insights
+app.post("/api/generate-insights", async (req, res) => {
+    try {
+      const { categories, amounts } = req.body;
+
+      // Prepare the prompt for Cohere
+      const prompt = `Analyze the following expense data and provide insights:
+      Categories: ${categories.join(", ")}
+      Amounts: ${amounts.join(", ")}`;
+
+      // Call Cohere API
+      const response = await cohere.generate({
+        prompt: prompt,
+        maxTokens: 200, // Adjust as needed
+        temperature: 0.7, // Adjust as needed
+      });
+
+      // Extract the generated insights
+      const insights = response.generations[0].text;
+
+      // Send the insights back to the client
+      res.json({ success: true, insights });
+    } catch (err) {
+      console.error("Error generating insights:", err);
+      res.status(500).json({ success: false, message: "Failed to generate insights" });
+    }
+  });
+
+// Error handling middleware (should be at the end)
+app.use((err, req, res, next) => {
     console.error(`[${new Date().toISOString()}] Error: ${err.message}`);
     res.status(500).json({ success: false, message: "Internal server error" });
   });
-  
-  const PORT = process.env.PORT || 5000;
-  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

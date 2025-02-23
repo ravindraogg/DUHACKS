@@ -12,10 +12,13 @@ interface Expense {
   expenseType: string;
 }
 
-const AfterLoginPage = () => {
+const Dashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState(""); // Added username state
+  const [userEmail, setUserEmail] = useState(""); // Keep userEmail for other functionality
   const [expenses, setExpenses] = useState<Expense[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const expenseTypes = [
@@ -47,26 +50,49 @@ const AfterLoginPage = () => {
   ];
 
   useEffect(() => {
-    const storedUsername = localStorage.getItem("username");
-    if (storedUsername) {
-      setUsername(storedUsername);
-    }
-    fetchRecentExpenses();
+    const init = async () => {
+      const storedUsername = localStorage.getItem("username"); // Retrieve username
+      const storedUserEmail = localStorage.getItem("userEmail"); // Retrieve userEmail
+
+      if (storedUsername) {
+        setUsername(storedUsername); // Set username
+      }
+      if (storedUserEmail) {
+        setUserEmail(storedUserEmail); // Set userEmail
+      }
+
+      await fetchRecentExpenses();
+    };
+    init();
   }, []);
 
   const fetchRecentExpenses = async () => {
+    setLoading(true);
+    setError(null);
     try {
       const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("No auth token found");
+      }
+
       const response = await axios.get("http://localhost:5000/api/expenses/recent", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
+
       if (response.data.success) {
+        console.log("Fetched expenses:", response.data.expenses);
         setExpenses(response.data.expenses);
+      } else {
+        throw new Error("Failed to fetch expenses");
       }
     } catch (err) {
-      console.error("Failed to fetch expenses:", err);
+      const errorMessage = err instanceof Error ? err.message : "Failed to fetch expenses";
+      console.error("Failed to fetch expenses:", errorMessage);
+      setError(errorMessage);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -79,6 +105,14 @@ const AfterLoginPage = () => {
     navigate(`/expense/${formattedFeature}`);
   };
 
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString("en-IN", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
+  };
+
   return (
     <div className="dashboard-container">
       <nav className="navbar">
@@ -86,7 +120,7 @@ const AfterLoginPage = () => {
           <h1 className="website-name">Cost-Sage</h1>
         </div>
         <div className="navbar-center">
-          <span className="welcome-message">Welcome, {username}!</span>
+          <span className="welcome-message">Welcome, {username}!</span> {/* Use username here */}
         </div>
         <div className="navbar-right">
           <button className="hamburger-button" onClick={toggleSidebar}>
@@ -125,28 +159,35 @@ const AfterLoginPage = () => {
         <div className="recent-expenses">
           <h2>Recent Expenses Across All Categories</h2>
           <div className="expense-history">
-            <table>
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Category</th>
-                  <th>Type</th>
-                  <th>Description</th>
-                  <th>Amount (₹)</th>
-                </tr>
-              </thead>
-              <tbody>
-                {expenses.slice(0, 5).map((expense, index) => (
-                  <tr key={index}>
-                    <td>{expense.date}</td>
-                    <td>{expense.category}</td>
-                    <td>{expense.expenseType}</td>
-                    <td>{expense.description}</td>
-                    <td>₹{expense.amount.toFixed(2)}</td>
+            {loading && <p>Loading expenses...</p>}
+            {error && <p className="error-message">Error: {error}</p>}
+            {!loading && !error && expenses.length === 0 && (
+              <p>No recent expenses found. Start adding expenses to see them here!</p>
+            )}
+            {!loading && !error && expenses.length > 0 && (
+              <table>
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Category</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Amount (₹)</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {expenses.map((expense, index) => (
+                    <tr key={expense.id || index}>
+                      <td>{formatDate(expense.date)}</td>
+                      <td>{expense.category}</td>
+                      <td>{expense.expenseType}</td>
+                      <td>{expense.description}</td>
+                      <td>₹{expense.amount.toFixed(2)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
           </div>
         </div>
       </div>
@@ -154,4 +195,4 @@ const AfterLoginPage = () => {
   );
 };
 
-export default AfterLoginPage;
+export default Dashboard;

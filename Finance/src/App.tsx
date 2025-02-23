@@ -3,8 +3,9 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Register from "./pages/register"; // Import the Register component
 import Login from "./pages/Login";
 import Home from "./pages/Home";
-import AfterLoginPage from "./pages/Dashboard";
+import Dashboard from "./pages/Dashboard";
 import ExpenseTrackingPage from "./pages/expense";
+import AnalysisPage from "./pages/AnalysisPage";
 
 
 const App: React.FC = () => {
@@ -14,8 +15,9 @@ const App: React.FC = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} /> 
         <Route path="/" element={<Home />} />
-        <Route path="/dashboard" element={<AfterLoginPage />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/expense/:feature" element={<ExpenseTrackingPage />} />
+        <Route path="/analysis/:expenseType" element={<AnalysisPage />} />
       </Routes>
     </Router>
   );

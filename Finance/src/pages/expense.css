@@ -1,168 +1,368 @@
-/* Remove default margin and padding from body and html */
+/* Base styles */
+:root {
+  --primary-color: #0056b3;
+  --secondary-color: #003d82;
+  --background-color: #f8f9fa;
+  --card-background: white;
+  --text-color: #333;
+  --border-radius: 10px;
+  --transition: all 0.3s ease;
+  --shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+}
+
 body, html {
   margin: 0;
   padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: var(--background-color);
 }
 
-/* Navbar */
+/* Enhanced Navbar */
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 20px;
-  background: #0056b3;
+  padding: 15px 30px;
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
   color: white;
-  position: fixed; /* Make navbar fixed */
-  top: 0; /* Stick to the top */
-  left: 0; /* Stick to the left */
-  right: 0; /* Stick to the right */
-  z-index: 1000; /* Ensure navbar is above other content */
-  
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  box-shadow: var(--shadow);
 }
 
 .title {
   font-size: 24px;
-  transition: var(--transition);
-  margin-left: 30px; /* Adjust as needed */
-  transform: translateX(-20px); 
+  font-weight: bold;
+  margin: 0;
+}
+
+.username {
+  font-size: 16px;
+  opacity: 0.9;
 }
 
 .back-button {
   background: white;
-  color: #0056b3;
+  color: var(--primary-color);
   border: none;
-  padding: 10px 15px;
+  padding: 10px 20px;
   font-size: 16px;
-  border-radius: 5px;
-  transition: var(--transition);
-  margin-right: 12px; /* Adjust as needed */
-  transform: translateX(-20px); 
+  border-radius: var(--border-radius);
   cursor: pointer;
-}
-
-.back-button:hover {
-  background: #e0e0e0;
+  transition: var(--transition);
 }
 
 /* Main Layout */
 .expense-container {
-  padding: 20px;
-  background: #f8f9fa;
+  padding: 90px 30px 30px;
   min-height: 100vh;
-  padding-top: 80px; /* Add padding to account for the fixed navbar */
 }
 
 .expense-content {
   display: flex;
   justify-content: center;
-  gap: 30px;
-  margin-top: 20px;
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-/* Expense Form */
+/* Enhanced Form Styling */
 .expense-form {
-  background: white;
-  padding: 20px;
+  background: var(--card-background);
+  padding: 30px;
   width: 100%;
   max-width: 400px;
-  border-radius: 10px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
 }
 
 .expense-form h2 {
-  color: #0056b3;
+  color: var(--primary-color);
   text-align: center;
+  margin-bottom: 25px;
 }
 
 .expense-form input,
 .expense-form select {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 2px solid #e0e0e0;
+  border-radius: var(--border-radius);
   font-size: 16px;
+  transition: var(--transition);
+}
+
+.expense-form input:focus,
+.expense-form select:focus {
+  border-color: var(--primary-color);
+  outline: none;
 }
 
 .expense-form button {
-  background: #0056b3;
-  color: white;
-  padding: 10px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-.expense-form button:hover {
-  background: #003d82;
-}
-
-/* Expense Table */
-.expense-list {
-  background: white;
-  padding: 20px;
   width: 100%;
-  max-width: 600px;
-  border-radius: 10px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  background: var(--primary-color);
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: var(--border-radius);
+  font-size: 16px;
+  cursor: pointer;
+  transition: var(--transition);
 }
 
-.expense-list h2 {
+/* Enhanced Table Styling */
+.expense-list {
+  background: var(--card-background);
+  padding: 30px;
+  width: 100%;
+  max-width: 700px;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+}
+
+.table-container {
+  overflow-x: auto;
+  margin: 20px 0;
+}
+
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-top: 20px;
+}
+
+th, td {
+  padding: 15px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+th {
+  background: var(--primary-color);
+  color: white;
+  font-weight: 500;
+}
+
+th:first-child {
+  border-top-left-radius: 8px;
+}
+
+th:last-child {
+  border-top-right-radius: 8px;
+}
+
+tr:hover {
+  background-color: #f5f5f5;
+}
+
+.total-expense {
+  margin-top: 20px;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: var(--border-radius);
+  text-align: right;
+}
+
+.total-expense h3 {
+  color: var(--primary-color);
+  margin: 0;
+}
+
+/* Enhanced Analysis Button */
+.analysis-button {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  font-size: 16px;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: var(--transition);
+  display: block;
+  margin: 30px auto;
+  width: auto;
+  min-width: 200px;
   text-align: center;
-  color: #0056b3;
+  text-decoration: none;
+  box-shadow: var(--shadow);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .expense-content {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .expense-form,
+  .expense-list {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .navbar {
+    padding: 15px;
+    flex-wrap: wrap;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .expense-container {
+    padding: 80px 15px 20px;
+  }
+}
+
+/* Add these styles to your expense.css file */
+
+.category-search-container {
+  position: relative;
+  width: 100%;
+}
+
+.category-suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  max-height: 200px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.suggestion-item {
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.suggestion-item:hover {
+  background-color: #f0f0f0;
+}
+
+/* Scrollbar styling */
+.category-suggestions::-webkit-scrollbar {
+  width: 8px;
+}
+
+.category-suggestions::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.category-suggestions::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.category-suggestions::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Form input enhancement */
+.form-input {
+  width: 100%;
+  padding: 10px;
+  border: 2px solid #e0e0e0;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.form-input:focus {
+  border-color: var(--primary-color);
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0, 86, 179, 0.1);
+}
+
+/* Action Buttons */
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.export-button {
+  background-color: #2E7D32;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+/* Filter Section */
+.filter-section {
+  margin: 2rem;
+  padding: 1rem;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+}
+
+.filter-options {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.filter-options select,
+.search-input {
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  min-width: 200px;
+}
+
+/* Delete Button */
+.delete-button {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+/* Table Improvements */
+.table-container {
+  overflow-x: auto;
+  margin: 1rem 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  color: black;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 10px;
+  background-color: white;
 }
 
 th, td {
-  padding: 10px;
-  border: 1px solid #ccc;
-  text-align: center;
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
 }
 
 th {
-  background: #0056b3;
-  color: white;
+  background-color: #f8f9fa;
+  font-weight: 600;
+  color: black;
 }
 
-.total-expense {
-  text-align: right;
-  margin-top: 10px;
-  font-size: 18px;
-  color: #0056b3;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .expense-content {
-    flex-direction: column;
-  }
-}
-
-.analysis-button {
-  background-color: #0056b3;
-  color: white;
-  border: none;
-  padding: 12px 24px;
-  font-size: 16px;
-  cursor: pointer;
-  border-radius: 8px;
-  width: 200px;
-  height: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 20px auto; /* Center button horizontally */
-  text-align: center;
-}
-
-
-.analysis-button:hover {
-  background-color: #0056b3; /* Darker blue on hover */
+tr:hover {
+  background-color: #f5f5f5;
 }
