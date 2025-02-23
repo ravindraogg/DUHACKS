@@ -127,7 +127,7 @@ const Dashboard = () => {
         localStorage.removeItem("token");
         localStorage.removeItem("username");
         localStorage.removeItem("userEmail");
-        navigate("/login");
+        navigate("/");
       } else {
         throw new Error("Logout failed");
       }
@@ -152,7 +152,7 @@ const Dashboard = () => {
           <h1 className="website-name">Cost-Sage</h1>
         </div>
         <div className="navbar-center">
-          <span className="welcome-message">Welcome, {username}!</span> {/* Use username here */}
+          <span className="welcome-message">Welcome, {username}!</span>
         </div>
         <div className="navbar-right">
           <button className="hamburger-button" onClick={toggleSidebar}>
@@ -168,7 +168,6 @@ const Dashboard = () => {
               {feature.name}
             </li>
           ))}
-          {/* Add Logout Button */}
           <li>
             <button className="logout-button" onClick={handleLogout}>
               Logout

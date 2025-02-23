@@ -48,40 +48,61 @@ const Login = () => {
     }
   };
 
+  const handleGoBack = () => {
+    navigate(-1); // Go back to the previous page
+  };
+
   return (
     <div className="login-container">
-      <h2>Login to Cost-Sage</h2>
-      <form onSubmit={handleSubmit}>
-        {error && <p className="error-message">{error}</p>}
-        <div className="form-group">
-          <label>Email</label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            placeholder="Enter your email"
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label>Password</label>
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            placeholder="Enter your password"
-            required
-          />
-        </div>
-        <button type="submit" className="login-button">
-          Login
+      {/* Navbar with Go Back button and website name */}
+      <nav className="login-navbar">
+      <h1 className="website-name">Cost-Sage</h1>
+        <button className="go-back-button" onClick={handleGoBack}>
+          ← Go Back
         </button>
-      </form>
-      <p className="register-link">
-        Don't have an account? <a href="/register">Register here</a>
-      </p>
+      </nav>
+
+      {/* Main content */}
+      <div className="login-content">
+        {/* Login form aligned to the left */}
+        <div className="login-form-container">
+          <h2>Login to Cost-Sage</h2>
+          <form onSubmit={handleSubmit}>
+            {error && <p className="error-message">{error}</p>}
+            <div className="form-group">
+              <label>Email</label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="Enter your email"
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label>Password</label>
+              <input
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                placeholder="Enter your password"
+                required
+              />
+            </div>
+            <button type="submit" className="login-button">
+              Login
+            </button>
+          </form>
+          <p className="register-link">
+            Don't have an account? <a href="/register">Register here</a>
+          </p>
+        </div>
+
+        {/* Cool shape in the top-right corner */}
+        <div className="cool-shape"></div>
+      </div>
     </div>
   );
 };
