@@ -3,7 +3,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Bar, Line, Pie } from "react-chartjs-2";
 import { Chart, CategoryScale, LinearScale, BarElement, LineElement, PointElement, ArcElement, Title, Tooltip, Legend } from "chart.js";
-import "./AnalysisPage.css";
+import "./analysis.css";
+
 // Register Chart.js components
 Chart.register(
   CategoryScale,
@@ -88,23 +89,17 @@ const AnalysisPage = () => {
       // Prepare data for AI analysis
       const categories = data.map((item) => item._id);
       const amounts = data.map((item) => item.totalAmount);
-  
-      // Call the backend endpoint
-      const response = await axios.post(
-        "https://duhacks-p6t6.onrender.com/api/generate-insights", // Backend endpoint
-        { categories, amounts },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-  
-      // Extract the generated insights
-      const insights = response.data.insights;
-  
-      // Set the insights state
-      setInsights(insights);
+
+      // Call an AI API (e.g., OpenAI) to generate insights
+      const response = await axios.post("https://api.openai.com/v1/completions", {
+        model: "text-davinci-003",
+        prompt: `Provide financial insights for the following expense categories and amounts: ${categories.join(
+          ", "
+        )}. Total amounts: ${amounts.join(", ")}.`,
+        max_tokens: 100,
+      });
+
+      setInsights(response.data.choices[0].text.trim());
     } catch (err) {
       console.error("Error generating insights:", err);
       setInsights("Unable to generate insights at this time.");
@@ -190,17 +185,6 @@ const AnalysisPage = () => {
   };
 
   return (
-    <div className="div">
-    <nav className="navbar">
-            <div className="navbar-brand">
-              <h1>Cost-Sage</h1>
-            </div>
-            <div className="navbar-links">
-            <button className="back-button" onClick={() => navigate("/dashboard")}>
-        ← Back to Dashboard
-      </button>
-            </div>
-          </nav>
     <div className="analysis-container">
       <h1>Expense Analysis: {expenseType}</h1>
 
@@ -237,42 +221,22 @@ const AnalysisPage = () => {
             {activeChart === "line" && <Line data={lineChartData} options={chartOptions} />}
             {activeChart === "pie" && <Pie data={pieChartData} options={chartOptions} />}
           </div>
+
+          {/* AI Insights */}
           <div className="insights-container">
-  <h2>
-    <strong>AI Insights</strong> {/* Bold title */}
-  </h2>
-  {insights ? (
-    <div className="insights-text">
-      {insights
-        .split("\n") // Split the insights into lines
-        .filter((line) => !line.includes("Let me know if you would like an entirely different analysis")) // Filter out unwanted lines
-        .map((point, index) => {
-          // Check if the line starts with a number (e.g., "1.", "2.", etc.)
-          if (/^\d+\./.test(point)) {
-            return (
-              <p key={index} style={{ textAlign: "justify" }}>
-                <strong>{point.split(".")[0]}.</strong> {/* Bold the number */}
-                {point.split(".").slice(1).join(".")} {/* Rest of the text */}
-              </p>
-            );
-          } else if (point.trim() !== "") { // Ensure empty lines are not rendered
-            return (
-              <p key={index} style={{ textAlign: "justify" }}>
-                {point}
-              </p>
-            );
-          }
-          return null; // Skip empty lines
-        })}
-    </div>
-  ) : (
-    <p>Generating insights...</p>
-  )}
-</div>
+            <h2>AI Insights</h2>
+            {insights ? (
+              <p>{insights}</p>
+            ) : (
+              <p>Generating insights...</p>
+            )}
+          </div>
         </>
       )}
 
-      </div>
+      <button className="back-button" onClick={() => navigate("/dashboard")}>
+        ← Back to Dashboard
+      </button>
     </div>
   );
 };
