@@ -3,8 +3,7 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
-  base: './',  // Change this from '/' to './'
-  build: {
-    outDir: 'dist',
-  },
+  ssr: {
+    noExternal: ['vike'] // Add external modules if needed
+  }
 });
