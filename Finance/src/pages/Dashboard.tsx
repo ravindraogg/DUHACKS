@@ -24,27 +24,27 @@ const Dashboard = () => {
   const expenseTypes = [
     {
       name: "Full Expense Tracker",
-      img: "public/expense-tracker.png",
+      img: "expense-tracker.png",
       description: "Track all your expenses in one place",
     },
     {
       name: "Business Expense Tracker",
-      img: "public/business-expense.png",
+      img: "business-expense.png",
       description: "Manage your business-related expenses",
     },
     {
       name: "Personal Expense Tracker",
-      img: "public/personal-expense.png",
+      img: "personal-expense.png",
       description: "Keep track of your personal spending",
     },
     {
       name: "Daily Expense Tracker",
-      img: "public/daily-expense.png",
+      img: "daily-expense.png",
       description: "Monitor your daily expenditures",
     },
     {
       name: "Other Expenses",
-      img: "public/other-expenses.png",
+      img: "other-expenses.png",
       description: "Track miscellaneous expenses",
     },
   ];
