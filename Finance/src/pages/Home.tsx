@@ -23,12 +23,12 @@ const Home = () => {
 
       {/* Hero Section */}
       <div className="hero-section">
-        <h2>Welcome to Cost-Sage</h2>
-        <p>Your ultimate platform for cost-cutting strategies and AI-driven financial planning.</p>
-        <button className="get-started-button" onClick={() => navigate("/register")}>
-          <FontAwesomeIcon icon={faRocket} /> Get Started
-        </button>
-      </div>
+  <h2>Welcome to <span className="brand-highlight">Cost-Sage</span></h2>
+  <p>Your ultimate platform for cost-cutting strategies and AI-driven financial planning.</p>
+  <button className="get-started-button" onClick={() => navigate("/register")}>
+    <FontAwesomeIcon icon={faRocket} /> Get Started
+  </button>
+</div>
 
       {/* Features Section */}
       <div className="features-section">
