@@ -99,6 +99,7 @@ body {
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin-top: 100px;
 }
 
 .register-container:hover {
@@ -204,4 +205,60 @@ body {
     padding: 12px;
     font-size: 14px;
   }
+}
+.navbar {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  background-color: #007bff;
+  color: white;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: var(--transition);
+  margin-right: 20px; /* Adjust as needed */
+  transform: translateX(-20px); 
+}
+
+.navbar-brand h1 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+  transition: var(--transition);
+  margin-left: 30px; /* Adjust as needed */
+  transform: translateX(-20px); 
+}
+
+.navbar-links .back-button {
+  background-color: transparent;
+  border: 2px solid white;
+  color: white;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: var(--transition);
+  margin-right: 20px; /* Adjust as needed */
+  transform: translateX(-20px); 
+}
+
+.navbar-links .login-button:hover {
+  background-color: white;
+  color: #007bff;
+}
+
+.go-back-button {
+  background: none;
+  border: 1px solid white; /* Added stroke */
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 8px 16px; /* Added padding for better appearance */
+  border-radius: 5px;
+  margin-right: 20px; /* Adjust as needed */
+}
+
+.go-back-button:hover {
+  background-color: rgba(255, 255, 255, 0.1); /* Added hover effect */
 }

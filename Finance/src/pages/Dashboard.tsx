@@ -15,7 +15,7 @@ interface Expense {
 const Dashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [username, setUsername] = useState(""); // Added username state
-  const [userEmail, setUserEmail] = useState(""); // Keep userEmail for other functionality
+  const [, setUserEmail] = useState(""); // Keep userEmail for other functionality
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

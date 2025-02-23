@@ -37,8 +37,22 @@ const Register = () => {
       setError(err instanceof Error ? err.message : "Registration failed. Please try again.");
     }
   };
+  const handleGoBack = () => {
+    navigate(-1); // Go back to the previous page
+  };
   
   return (
+    <div className="div">
+      <nav className="navbar">
+              <div className="navbar-brand">
+                <h1>Cost-Sage</h1>
+              </div>
+              <div className="navbar-links">
+              <button className="go-back-button" onClick={handleGoBack}>
+          ← Go Back
+        </button>
+              </div>
+            </nav>
     <div className="register-container">
       <h2>Register for Cost-Sage</h2>
       <form onSubmit={handleSubmit}>
@@ -102,6 +116,7 @@ const Register = () => {
           Register
         </button>
       </form>
+    </div>
     </div>
   );
 };

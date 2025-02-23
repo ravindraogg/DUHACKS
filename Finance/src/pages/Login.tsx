@@ -53,16 +53,18 @@ const Login = () => {
   };
 
   return (
-    <div className="login-container">
-      {/* Navbar with Go Back button and website name */}
-      <nav className="login-navbar">
-      <h1 className="website-name">Cost-Sage</h1>
-        <button className="go-back-button" onClick={handleGoBack}>
+    <div className="div">
+  <nav className="navbar">
+          <div className="navbar-brand">
+            <h1>Cost-Sage</h1>
+          </div>
+          <div className="navbar-links">
+          <button className="go-back-button" onClick={handleGoBack}>
           ← Go Back
         </button>
-      </nav>
-
-      {/* Main content */}
+          </div>
+        </nav>
+    <div className="login-container">
       <div className="login-content">
         {/* Login form aligned to the left */}
         <div className="login-form-container">
@@ -104,6 +106,7 @@ const Login = () => {
         <div className="cool-shape"></div>
       </div>
     </div>
+  </div>
   );
 };
 

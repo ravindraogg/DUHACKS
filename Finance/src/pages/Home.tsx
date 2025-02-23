@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChartLine, faCogs, faRocket, faShieldAlt, faSignInAlt } from "@fortawesome/free-solid-svg-icons";
 import "./Home.css";
-
+import Footer from "./Footer"
 const Home = () => {
   const navigate = useNavigate();
 
@@ -51,6 +51,7 @@ const Home = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

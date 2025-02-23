@@ -4,7 +4,6 @@ import axios from "axios";
 import { Bar, Line, Pie } from "react-chartjs-2";
 import { Chart, CategoryScale, LinearScale, BarElement, LineElement, PointElement, ArcElement, Title, Tooltip, Legend } from "chart.js";
 import "./AnalysisPage.css";
-import { CohereClient } from "cohere-ai"; 
 // Register Chart.js components
 Chart.register(
   CategoryScale,
@@ -191,6 +190,17 @@ const AnalysisPage = () => {
   };
 
   return (
+    <div className="div">
+    <nav className="navbar">
+            <div className="navbar-brand">
+              <h1>Cost-Sage</h1>
+            </div>
+            <div className="navbar-links">
+            <button className="back-button" onClick={() => navigate("/dashboard")}>
+        ← Back to Dashboard
+      </button>
+            </div>
+          </nav>
     <div className="analysis-container">
       <h1>Expense Analysis: {expenseType}</h1>
 
@@ -227,22 +237,42 @@ const AnalysisPage = () => {
             {activeChart === "line" && <Line data={lineChartData} options={chartOptions} />}
             {activeChart === "pie" && <Pie data={pieChartData} options={chartOptions} />}
           </div>
-
-          {/* AI Insights */}
           <div className="insights-container">
-            <h2>AI Insights</h2>
-            {insights ? (
-              <p>{insights}</p>
-            ) : (
-              <p>Generating insights...</p>
-            )}
-          </div>
+  <h2>
+    <strong>AI Insights</strong> {/* Bold title */}
+  </h2>
+  {insights ? (
+    <div className="insights-text">
+      {insights
+        .split("\n") // Split the insights into lines
+        .filter((line) => !line.includes("Let me know if you would like an entirely different analysis")) // Filter out unwanted lines
+        .map((point, index) => {
+          // Check if the line starts with a number (e.g., "1.", "2.", etc.)
+          if (/^\d+\./.test(point)) {
+            return (
+              <p key={index} style={{ textAlign: "justify" }}>
+                <strong>{point.split(".")[0]}.</strong> {/* Bold the number */}
+                {point.split(".").slice(1).join(".")} {/* Rest of the text */}
+              </p>
+            );
+          } else if (point.trim() !== "") { // Ensure empty lines are not rendered
+            return (
+              <p key={index} style={{ textAlign: "justify" }}>
+                {point}
+              </p>
+            );
+          }
+          return null; // Skip empty lines
+        })}
+    </div>
+  ) : (
+    <p>Generating insights...</p>
+  )}
+</div>
         </>
       )}
 
-      <button className="back-button" onClick={() => navigate("/dashboard")}>
-        ← Back to Dashboard
-      </button>
+      </div>
     </div>
   );
 };
