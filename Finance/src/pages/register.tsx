@@ -32,7 +32,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 
     if (response.data.success) {
        localStorage.setItem("username", response.data.user.name);
-      localStorage.setItem("userEmail", formData.email);
+       localStorage.setItem("userEmail", response.data.user.email);
       
       if (response.data.token) {
         localStorage.setItem("token", response.data.token);
