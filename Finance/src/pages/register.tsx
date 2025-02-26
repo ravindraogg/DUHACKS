@@ -28,7 +28,7 @@ const Register = () => {
     }
 
     try {
-      const response = await axios.post("http://localhost:5173/api/register", formData);
+      const response = await axios.post("https://cost-sage-du-hacks.netlify.app/api/register", formData);
       if (response.data.success) {
         localStorage.setItem("username", response.data.username);
         localStorage.setItem("userEmail", formData.email); // Store email in local storage
