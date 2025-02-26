@@ -18,26 +18,33 @@ const Register = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setError("");
+const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+  setError("");
 
-    if (!formData.name || !formData.email || !formData.password || !formData.companyName || !formData.industry) {
-      setError("All fields are required.");
-      return;
-    }
+  if (!formData.name || !formData.email || !formData.password || !formData.companyName || !formData.industry) {
+    setError("All fields are required.");
+    return;
+  }
 
-    try {
-      const response = await axios.post("https://duhacks-p6t6.onrender.com/api/register", formData);
-      if (response.data.success) {
-        localStorage.setItem("username", response.data.username);
-        localStorage.setItem("userEmail", formData.email); // Store email in local storage
-        navigate("/dashboard");
+  try {
+    const response = await axios.post("https://duhacks-p6t6.onrender.com/api/register", formData);
+
+    if (response.data.success) {
+      localStorage.setItem("username", response.data.username);
+      localStorage.setItem("userEmail", formData.email);
+      
+      if (response.data.token) {
+        localStorage.setItem("token", response.data.token);
       }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Registration failed. Please try again.");
+
+      navigate("/dashboard");
     }
-  };
+  } catch (err) {
+    setError(err instanceof Error ? err.message : "Registration failed. Please try again.");
+  }
+};
+
 
   const handleGoBack = () => {
     navigate(-1); // Go back to the previous page
