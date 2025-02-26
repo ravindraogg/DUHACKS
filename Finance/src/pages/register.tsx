@@ -31,7 +31,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     const response = await axios.post("https://duhacks-p6t6.onrender.com/api/register", formData);
 
     if (response.data.success) {
-      localStorage.setItem("username", response.data.username);
+       localStorage.setItem("username", response.data.user.name);
       localStorage.setItem("userEmail", formData.email);
       
       if (response.data.token) {
