@@ -75,7 +75,7 @@ const Dashboard = () => {
         throw new Error("No auth token found");
       }
 
-      const response = await axios.get("https://duhacks-p6t6.onrender.com/api/expenses/recent", {
+      const response = await axios.get("http://localhost:5000/api/expenses/recent", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -113,7 +113,7 @@ const Dashboard = () => {
       }
 
       const response = await axios.post(
-        "https://duhacks-p6t6.onrender.com/api/logout",
+        "http://localhost:5000/api/logout",
         {},
         {
           headers: {
@@ -151,9 +151,7 @@ const Dashboard = () => {
         <div className="navbar-left">
           <h1 className="website-name">Cost-Sage</h1>
         </div>
-        <div className="navbar-center">
-          <span className="welcome-message">Welcome, {username}!</span>
-        </div>
+          <span className="username">Welcome, {username}</span>
         <div className="navbar-right">
           <button className="hamburger-button" onClick={toggleSidebar}>
             ☰
