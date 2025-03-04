@@ -203,7 +203,7 @@ const ExpenseTracker = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        `https://duhacks-p6t6.onrender.com/api/expenses/${encodeURIComponent(expenseType)}`,
+        `http://localhost:5000/api/expenses/${encodeURIComponent(expenseType)}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
