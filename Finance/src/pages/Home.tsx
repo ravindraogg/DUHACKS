@@ -4,21 +4,21 @@ import {
   faChartLine, faCogs, faRocket, faShieldAlt, faSignInAlt, 
   faUsers, faQuestionCircle
 } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react"; // Import useState
+import { useState } from "react"; 
 import "./Home.css";
 import Footer from "./Footer";
 
 const Home = () => {
   const navigate = useNavigate();
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Define state
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); 
 
   const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen); // Toggle state
+    setIsSidebarOpen(!isSidebarOpen); 
   };
 
   return (
     <div className="home-container">
-      {/* Navbar */}
+    
       <nav className="navbar">
         <div className="navbar-brand">
           <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
@@ -37,16 +37,12 @@ const Home = () => {
             Sign Up
           </button>
         </div>
-
-        {/* Mobile menu button */}
         <div className="mobile-menu-toggle" onClick={toggleSidebar}>
           <span className={isSidebarOpen ? "bar open" : "bar"}></span>
           <span className={isSidebarOpen ? "bar open" : "bar"}></span>
           <span className={isSidebarOpen ? "bar open" : "bar"}></span>
         </div>
       </nav>
-
-      {/* Sidebar Menu (optional) */}
       {isSidebarOpen && (
         <div className="sidebar">
           <a href="#features" onClick={toggleSidebar}>Features</a>
@@ -55,8 +51,6 @@ const Home = () => {
           <button onClick={() => navigate("/register")}>Sign Up</button>
         </div>
       )}
-
-      {/* Hero Section */}
       <div className="hero-section">
         <div className="hero-content">
           <h2>Welcome to <span className="brand-highlight">Cost-Sage</span></h2>
@@ -74,8 +68,6 @@ const Home = () => {
           <div className="dashboard-preview"></div>
         </div> */}
       </div>
-
-      {/* Features Section */}
       <div id="features" className="features-section">
         <h3>Why Choose Cost-Sage?</h3>
         <div className="features-grid">
@@ -101,8 +93,6 @@ const Home = () => {
           </div>
         </div>
       </div>
-
-      {/* How It Works */}
       <div className="how-it-works">
         <h3>How Cost-Sage Works</h3>
         <div className="steps-container">
@@ -128,8 +118,6 @@ const Home = () => {
           </div>
         </div>
       </div>
-
-      {/* Testimonials */}
       <div id="testimonials" className="testimonials-section">
         <h3>What Our Users Say</h3>
         <div className="testimonials-grid">
@@ -159,8 +147,6 @@ const Home = () => {
           </div>
         </div>
       </div>
-
-      {/* CTA Section */}
       <div className="cta-section">
         <h3>Ready to Optimize Your Finances?</h3>
         <p>Join thousands of users who have transformed their financial future with Cost-Sage.</p>
@@ -168,8 +154,6 @@ const Home = () => {
           Start Your Free Trial
         </button>
       </div>
-
-      {/* FAQ Section */}
       <div id="faq" className="faq-section">
         <h3>Frequently Asked Questions</h3>
         <div className="faq-container">
