@@ -14,7 +14,7 @@ const AboutUs = () => {
         {/* Team Member 1 */}
         <div className="team-member">
           <img
-src="ravindra.jpg"            alt="Ravindra S"
+src="public/assets/ravindra.jpg"            alt="Ravindra S"
             className="profile-pic" onError={(e) => {
                 e.currentTarget.src = "https://via.placeholder.com/150"; // Fallback image
               }}
@@ -40,7 +40,7 @@ src="ravindra.jpg"            alt="Ravindra S"
         {/* Team Member 2 */}
         <div className="team-member">
           <img
-src="nitesh.jpg"             alt="Nitesh Reddy"
+src="public/assets/nitesh.jpg"             alt="Nitesh Reddy"
             className="profile-pic"
             onError={(e) => {
                 e.currentTarget.src = "https://via.placeholder.com/150"; // Fallback image
@@ -55,10 +55,10 @@ src="nitesh.jpg"             alt="Nitesh Reddy"
             <a href="https://github.com/PanatiNitesh" target="_blank" rel="noopener noreferrer">
             <FontAwesomeIcon icon={faGithub} />
             </a>
-            <a href="https://x.com/nitesh24032005" target="_blank" rel="noopener noreferrer">
+            <a href="https://x.com/Nitesh_Reddy_" target="_blank" rel="noopener noreferrer">
             <FontAwesomeIcon icon={faTwitter} />
             </a>
-            <a href="https://www.linkedin.com/in/nitesh-reddy-b39467282/" target="_blank" rel="noopener noreferrer">
+            <a href="https://www.linkedin.com/in/nitesh-reddy-dev/" target="_blank" rel="noopener noreferrer">
             <FontAwesomeIcon icon={faLinkedin} />
             </a>
           </div>
