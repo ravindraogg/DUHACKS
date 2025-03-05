@@ -25,7 +25,7 @@ const Login = () => {
     }
 
     try {
-      const response = await axios.post("https://cost-sage-backend-gugyfuehbvd9a7dd.southindia-01.azurewebsites.net/api/login", formData);
+      const response = await axios.post("https://cost-sage-backedn.netlify.app/api/login", formData);
 
       if (response.data.success) {
         // Store token for authentication
