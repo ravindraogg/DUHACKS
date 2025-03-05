@@ -28,7 +28,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
   }
 
   try {
-    const response = await axios.post("https://duhacks-p6t6.onrender.com/api/register", formData);
+    const response = await axios.post("https://cost-sage-backend-gugyfuehbvd9a7dd.southindia-01.azurewebsites.net/api/register", formData);
 
     if (response.data.success) {
        localStorage.setItem("username", response.data.user.name);
