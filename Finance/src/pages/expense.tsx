@@ -5,7 +5,7 @@ import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface Expense {
-  id: number;
+  _id: string; // MongoDB ObjectID as string
   amount: number;
   category: string;
   description: string;
@@ -40,12 +40,12 @@ const ExpenseTracker = () => {
   // Capitalize first letter of each word for display
   const capitalizedExpenseType = expenseType
     .split(" ")
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
 
   // Complete expense categories with all options
   const expenseCategories: ExpenseCategory = {
-    "business": [
+    business: [
       // Office Expenses
       "Office Supplies", "Office Furniture", "Office Equipment", "Printing & Stationery",
       "Office Snacks", "Office Maintenance", "Office Decoration", "Office Security",
@@ -78,10 +78,10 @@ const ExpenseTracker = () => {
       "Research & Development", "Patents & Trademarks", "Employee Benefits",
       "Team Building", "Office Rent", "Business Insurance", "Business Licenses",
       "Membership Fees", "Subscriptions", "Equipment Rental", "Maintenance & Repairs",
-      "Business Meals", "Client Entertainment", "Office Utilities", "Shipping & Postage"
+      "Business Meals", "Client Entertainment", "Office Utilities", "Shipping & Postage",
     ],
     
-    "personal": [
+    personal: [
       // Food & Dining
       "Groceries", "Restaurants", "Fast Food", "Coffee Shops",
       "Food Delivery", "Specialty Foods", "Alcohol & Bars", "Snacks",
@@ -114,10 +114,10 @@ const ExpenseTracker = () => {
       "Pet Care", "Child Care", "Family Activities", "Vacation & Travel",
       "Emergency Fund", "Savings", "Investments", "Charitable Donations",
       "Personal Loans", "Credit Card Payments", "Bank Fees", "Tax Preparation",
-      "Life Insurance", "Identity Protection", "Legal Services", "Personal Gifts"
+      "Life Insurance", "Identity Protection", "Legal Services", "Personal Gifts",
     ],
     
-    "daily": [
+    daily: [
       // Food & Beverages
       "Breakfast", "Lunch", "Dinner", "Coffee/Tea",
       "Snacks", "Beverages", "Street Food", "Restaurant Meals",
@@ -149,10 +149,10 @@ const ExpenseTracker = () => {
       // Additional Daily Categories
       "Daily Parking", "Toll Charges", "Quick Snacks", "Water Refills",
       "Phone Credits", "Quick Prints", "Small Tools", "Daily Maintenance",
-      "Quick Repairs", "Daily Supplies", "Small Electronics", "Quick Services"
+      "Quick Repairs", "Daily Supplies", "Small Electronics", "Quick Services",
     ],
     
-    "full": [
+    full: [
       // Combined Categories
       "Housing & Utilities", "Transportation", "Food & Dining", "Health & Medical",
       "Personal Care", "Entertainment", "Shopping", "Education & Training",
@@ -166,8 +166,8 @@ const ExpenseTracker = () => {
       "Subscriptions", "Membership Fees", "Professional Development", "Office Expenses",
       "Marketing & Advertising", "Equipment & Supplies", "Maintenance & Repairs",
       "Miscellaneous Expenses", "Bank Charges", "Credit Card Fees", "Loan Payments",
-      "Investment Properties"
-    ]
+      "Investment Properties",
+    ],
   };
 
   // Get filtered suggestions based on search input
@@ -175,7 +175,7 @@ const ExpenseTracker = () => {
     const currentCategories = expenseCategories[expenseType.split(" ")[0]] || expenseCategories.full;
     if (!categorySearch) return currentCategories;
     
-    return currentCategories.filter(cat => 
+    return currentCategories.filter((cat) => 
       cat.toLowerCase().includes(categorySearch.toLowerCase())
     );
   };
@@ -211,8 +211,16 @@ const ExpenseTracker = () => {
         }
       );
       if (response.data.success) {
-        // Set fresh expenses from the server
-        setExpenses(response.data.expenses);
+        // Set fresh expenses from the server, ensuring _id is included
+        setExpenses(response.data.expenses.map((expense: any) => ({
+          _id: expense._id,
+          amount: expense.amount,
+          category: expense.category,
+          description: expense.description,
+          date: expense.date,
+          userEmail: expense.userEmail,
+          expenseType: expense.expenseType,
+        })));
       }
     } catch (err) {
       console.error("Failed to fetch expenses:", (err as Error).message);
@@ -226,7 +234,6 @@ const ExpenseTracker = () => {
     }
 
     const newExpense = {
-      id: Date.now(),
       amount: parseFloat(amount),
       category,
       description,
@@ -271,7 +278,12 @@ const ExpenseTracker = () => {
     return expenses.reduce((total, expense) => total + expense.amount, 0);
   };
 
-  const handleDelete = async (expenseId: number) => {
+  const handleDelete = async (expenseId: string) => {
+    if (!expenseId) {
+      console.error("Invalid expense ID: undefined");
+      return;
+    }
+
     try {
       const token = localStorage.getItem("token");
       const response = await axios.delete(
@@ -408,12 +420,14 @@ const ExpenseTracker = () => {
             placeholder="Description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
+            className="form-input"
           />
           <motion.input
             whileFocus={{ scale: 1.02 }}
             type="date"
             value={date}
             onChange={(e) => setDate(e.target.value)}
+            className="form-input"
           />
           <motion.button 
             whileHover={{ scale: 1.05 }}
@@ -446,7 +460,7 @@ const ExpenseTracker = () => {
               <tbody>
                 {expenses.map((expense, index) => (
                   <motion.tr 
-                    key={expense.id}
+                    key={expense._id} // Use _id for unique key
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.1 }}
@@ -460,7 +474,7 @@ const ExpenseTracker = () => {
                         className="delete-button"
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
-                        onClick={() => handleDelete(expense.id)}
+                        onClick={() => handleDelete(expense._id)}
                       >
                         Delete
                       </motion.button>
@@ -490,7 +504,8 @@ const ExpenseTracker = () => {
             Analyze Expenses
           </motion.button>
         </NavLink>
-                </motion.div>
+      </motion.div>
+
       {/* Add a filter section */}
       <motion.div 
         className="filter-section"
@@ -532,8 +547,8 @@ const ExpenseTracker = () => {
             onChange={(e) => {
               const searchTerm = e.target.value.toLowerCase();
               fetchExpenses().then(() => {
-                setExpenses(prev => 
-                  prev.filter(expense => 
+                setExpenses((prev) => 
+                  prev.filter((expense) => 
                     expense.description.toLowerCase().includes(searchTerm) ||
                     expense.category.toLowerCase().includes(searchTerm)
                   )
