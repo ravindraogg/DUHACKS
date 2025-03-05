@@ -203,7 +203,7 @@ const ExpenseTracker = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        `http://localhost:5000/api/expenses/${encodeURIComponent(expenseType)}`,
+        `https://cost-sage-backend-gugyfuehbvd9a7dd.southindia-01.azurewebsites.net/api/expenses/${encodeURIComponent(expenseType)}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -238,7 +238,7 @@ const ExpenseTracker = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
-        "https://duhacks-p6t6.onrender.com/api/expenses",
+        "https://cost-sage-backend-gugyfuehbvd9a7dd.southindia-01.azurewebsites.net/api/expenses",
         {
           expenses: [newExpense],
           username,
@@ -275,7 +275,7 @@ const ExpenseTracker = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.delete(
-        `https://duhacks-p6t6.onrender.com/api/expenses/${expenseId}`,
+        `https://cost-sage-backend-gugyfuehbvd9a7dd.southindia-01.azurewebsites.net/api/expenses/${expenseId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -296,7 +296,7 @@ const ExpenseTracker = () => {
     try {
       const token = localStorage.getItem("token");
       await axios.post(
-        "https://duhacks-p6t6.onrender.com/api/expenses/analysis",
+        "https://cost-sage-backend-gugyfuehbvd9a7dd.southindia-01.azurewebsites.net/api/expenses/analysis",
         {
           username,
           userEmail,
